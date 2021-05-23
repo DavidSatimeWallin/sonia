@@ -13,6 +13,7 @@ Either just go to [releases](https://github.com/dvwallin/sonia/releases) or clon
 - git
 - bash
 - build-essential (on debian/ubuntu. who knows what it's called on other systems?!)
+- fuse
 
 ## Is it stable?!
 Probably not. It might work and it might destroy you're entire system and every computer you've ever seen. Don't hold me responsible.
