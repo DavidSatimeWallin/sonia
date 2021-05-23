@@ -7,7 +7,7 @@ Sonia is an app to pull down neovim, clone a vim config, symlink everything corr
 Well, it's pretty much just for me. I wanna be able to get my dev-environment up and running with a single command on any linux system. Also, a few friends wanted to use the same setup - so instead of giving instructions I can now just supply a single binary to solve it.
 
 ## Can it be installed?!
-Either just go to (releases)[https://github.com/dvwallin/sonia/releases] or glone the repo and run `v . -prod`. It's all up to you.
+Either just go to [releases](https://github.com/dvwallin/sonia/releases) or glone the repo and run `v . -prod`. It's all up to you.
 
 ## License?!
 Read license.md perhaps?
