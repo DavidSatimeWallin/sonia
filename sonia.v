@@ -7,6 +7,10 @@ import term
 
 import readline
 
+const (
+	sonia_version = '0.1.1'
+)
+
 /*
 
 	@todo
@@ -64,6 +68,7 @@ struct Cfg {
 fn main() {
 
 	if '--help' in os.args || '-help' in os.args {
+		println(term.header('Sonia v$sonia_version - by David Satime Wallin <david@dwall.in>', '.'))
 		print('\nUSAGE:\n\n\t${term.bold('sonia [flags]')}\n\n')
 		println('FLAGS:')
 		print('\n\t${term.bold('--bashrc')}\t\tthe location of the .bashrc -file. default is \$HOME/.bashrc')
