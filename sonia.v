@@ -8,7 +8,7 @@ import term
 import readline
 
 const (
-	sonia_version = '0.1.1'
+	sonia_version = '0.1.2.1'
 )
 
 /*
@@ -199,15 +199,24 @@ fn install_vimplug() ? {
 fn (c Cfg) symlink_config() ? {
 	tell('creating symlink')
 	repo := [c.target_repo, 'slimvim'].join('/')
+	link := [c.nvim_cfg_folder, 'init.vim'].join('/')
+	if	os.exists(link) &&
+		os.is_link(link) {
+			tell('removing old symlink ($link)')
+			os.rm(link) or {
+				return err
+			}
+			tell('old symlink ($link) removed')
+		}
 	ok := os.symlink(
 		'$repo/.vimrc',
-		'$c.nvim_cfg_folder/init.vim'
+		link	
 	) or {
 		return err
 	}
 	if !ok {
 		return error(
-			'could not symlink $repo/.vimrc into $c.nvim_cfg_folder/init.vim'
+			'could not symlink $repo/.vimrc into $link'
 		)
 	}
 	tell('symlink created')
@@ -363,7 +372,7 @@ fn (c Cfg) path_exists() ?bool {
 	content := os.read_file(c.bashrc) or {
 		return error('could not read from $c.bashrc: ${err.msg}')
 	}
-	if content.contains('#sonia-path') {
+	if content.contains('#sonia-cfg') {
 		return true
 	}
 	return false
@@ -371,7 +380,7 @@ fn (c Cfg) path_exists() ?bool {
 
 fn (c Cfg) handle_rc_files() ? {
 	soniarc := [c.target_folder, 'soniarc'].join('/')
-	soniarc_content := '#sonia-path\nexport PATH="$c.target_bin:\$PATH"\nalias vim="nvim.appimage"'
+	soniarc_content := '#sonia-cfg\nexport PATH="$c.target_bin:\$PATH"\nalias vim="nvim.appimage"'
 	
 	mut soniarc_file:= os.open_append(soniarc) or {
 		return error('could not access $soniarc: ${err.msg}')
