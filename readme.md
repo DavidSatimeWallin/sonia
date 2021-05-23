@@ -14,3 +14,16 @@ Probably not. It might work and it might destroy you're entire system and every 
 
 ## License?!
 Read license.md perhaps?
+
+## Screenshots?!
+Telescopes file finder
+![Find](/screenshots/find.png)
+
+Telescopes grep tool
+![Grep](/screenshots/grep.png)
+
+Nerdtree
+![Tree](/screenshots/tree.png)
+
+## Which config file?!
+[this one of course](https://github.com/dvwallin/slimvim)
