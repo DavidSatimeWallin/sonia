@@ -14,10 +14,8 @@ const (
 /*
 
 	@todo
-	! rename this shaite: sonia
 	- put bash-things in .sonia/bashrc and append to ~/.bashrc
 	- some kind of time estimate per step..?
-	- should config -repo be settable..?
 	- add support for fish and zsh..?
 	- add update-function for conf repo, plugins and cargo utilites
 
