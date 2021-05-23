@@ -27,3 +27,8 @@ Nerdtree
 
 ## Which config file?!
 [this one of course](https://github.com/dvwallin/slimvim)
+
+## Requirements?!
+- git
+- bash
+- build-essential (on debian/ubuntu. who knows what it's called on other systems?!)
