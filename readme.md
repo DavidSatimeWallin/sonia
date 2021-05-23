@@ -9,6 +9,11 @@ Well, it's pretty much just for me. I wanna be able to get my dev-environment up
 ## Can it be installed?!
 Either just go to [releases](https://github.com/dvwallin/sonia/releases) or clone the repo and run `v . -prod`. It's all up to you.
 
+## Requirements?!
+- git
+- bash
+- build-essential (on debian/ubuntu. who knows what it's called on other systems?!)
+
 ## Is it stable?!
 Probably not. It might work and it might destroy you're entire system and every computer you've ever seen. Don't hold me responsible.
 
@@ -27,8 +32,3 @@ Nerdtree
 
 ## Which config file?!
 [this one of course](https://github.com/dvwallin/slimvim)
-
-## Requirements?!
-- git
-- bash
-- build-essential (on debian/ubuntu. who knows what it's called on other systems?!)
