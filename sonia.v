@@ -21,7 +21,7 @@ const (
 
 */
 struct Cfg {
-	bashrc string = 
+	bashrc string =
 		normalize_target(
 			cmdline.option(
 				os.args,
@@ -29,7 +29,7 @@ struct Cfg {
 				'\$HOME/.bashrc'
 			)
 		)
-	target_folder string = 
+	target_folder string =
 		normalize_target(
 			cmdline.option(
 				os.args,
@@ -37,7 +37,7 @@ struct Cfg {
 				'\$HOME/.sonia'
 			)
 		)
-	nvim_cfg_folder string = 
+	nvim_cfg_folder string =
 		normalize_target(
 			cmdline.option(
 				os.args,
@@ -52,7 +52,7 @@ struct Cfg {
 			'yes'
 		)
 	cargo_bin string = normalize_target('\$HOME/.cargo/bin')
-	git_repo string = 
+	git_repo string =
 		cmdline.option(
 			os.args,
 			'--git-repo',
@@ -210,7 +210,7 @@ fn (c Cfg) symlink_config() ? {
 		}
 	ok := os.symlink(
 		'$repo/.vimrc',
-		link	
+		link
 	) or {
 		return err
 	}
@@ -381,7 +381,7 @@ fn (c Cfg) path_exists() ?bool {
 fn (c Cfg) handle_rc_files() ? {
 	soniarc := [c.target_folder, 'soniarc'].join('/')
 	soniarc_content := '#sonia-cfg\nexport PATH="$c.target_bin:\$PATH"\nalias vim="nvim.appimage"'
-	
+
 	mut soniarc_file:= os.open_append(soniarc) or {
 		return error('could not access $soniarc: ${err.msg}')
 	}
@@ -389,7 +389,7 @@ fn (c Cfg) handle_rc_files() ? {
 		return error('could not write $soniarc_content to $soniarc: ${err.msg}')
 	}
 	soniarc_file.close()
-	
+
 	str := '#sonia-cfg\nif [ -f $soniarc ]; then\n\t. $soniarc\nfi\n'
 	mut bashrc_file:= os.open_append(c.bashrc) or {
 		return error('could not access $c.bashrc: ${err.msg}')
@@ -401,12 +401,12 @@ fn (c Cfg) handle_rc_files() ? {
 }
 
 fn normalize_target(input string) string {
-	mut output := input.replace('\$HOME', os.home_dir()) 
+	mut output := input.replace('\$HOME', os.home_dir())
 	output = output.replace('~', os.home_dir())
 	return os.real_path(output)
 }
 
 fn (mut c Cfg) build_paths() {
-	c.target_bin = [c.target_folder, c.target_bin].join('/')	
+	c.target_bin = [c.target_folder, c.target_bin].join('/')
 	c.target_repo = [c.target_folder, c.target_repo].join('/')
 }
