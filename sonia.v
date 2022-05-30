@@ -8,7 +8,7 @@ import term
 import readline
 
 const (
-	sonia_version = '0.1.2.1'
+	sonia_version = '0.1.2.2'
 )
 
 /*
@@ -95,46 +95,46 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 	cfg.build_paths()
 
 	path_exists := cfg.path_exists() or {
-		fail(err.msg)
+		fail(err.msg())
 		return
 	}
 
 	cfg.create_directories_if_not_exists() or {
-		fail(err.msg)
+		fail(err.msg())
 	}
 
 	if !path_exists {
 		cfg.handle_rc_files() or {
-			fail(err.msg)
+			fail(err.msg())
 		}
 	}
 
 	cfg.download_nvim_appimage() or {
-		fail(err.msg)
+		fail(err.msg())
 	}
 
 	install_rustup() or {
-		fail(err.msg)
+		fail(err.msg())
 	}
 
 	install_rust_utilities() or {
-		fail(err.msg)
+		fail(err.msg())
 	}
 
 	cfg.clone_config() or {
-		fail(err.msg)
+		fail(err.msg())
 	}
 
 	cfg.symlink_config() or {
-		fail(err.msg)
+		fail(err.msg())
 	}
 
 	cfg.install_vim_plugins() or {
-		fail(err.msg)
+		fail(err.msg())
 	}
 
 	cfg.install_coc_plugins() or {
-		fail(err.msg)
+		fail(err.msg())
 	}
 
 	tell('install complete!')
@@ -357,20 +357,22 @@ fn (c Cfg) download_nvim_appimage() ? {
 	if !skip_download {
 		tell('downloading $output_file')
 		http.download_file(
-			'https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage',
+			'https://github.com/neovim/neovim/releases/download/v0.7.0/nvim.appimage',
 			output_file
 		) or {
-			return error('could not download nvim: ${err.msg}')
+			return error('could not download nvim: ${err.msg()}')
 		}
 		tell('downloaded $output_file')
-		os.chmod(output_file, 0o755)
+		os.chmod(output_file, 0o755) or {
+			return error('could not chmod $output_file: $err')
+		}
 		tell('made $output_file executable')
 	}
 }
 
 fn (c Cfg) path_exists() ?bool {
 	content := os.read_file(c.bashrc) or {
-		return error('could not read from $c.bashrc: ${err.msg}')
+		return error('could not read from $c.bashrc: ${err.msg()}')
 	}
 	if content.contains('#sonia-cfg') {
 		return true
@@ -383,19 +385,19 @@ fn (c Cfg) handle_rc_files() ? {
 	soniarc_content := '#sonia-cfg\nexport PATH="$c.target_bin:\$PATH"\nalias vim="nvim.appimage"'
 
 	mut soniarc_file:= os.open_append(soniarc) or {
-		return error('could not access $soniarc: ${err.msg}')
+		return error('could not access $soniarc: ${err.msg()}')
 	}
 	soniarc_file.writeln(soniarc_content) or {
-		return error('could not write $soniarc_content to $soniarc: ${err.msg}')
+		return error('could not write $soniarc_content to $soniarc: ${err.msg()}')
 	}
 	soniarc_file.close()
 
 	str := '#sonia-cfg\nif [ -f $soniarc ]; then\n\t. $soniarc\nfi\n'
 	mut bashrc_file:= os.open_append(c.bashrc) or {
-		return error('could not access $c.bashrc: ${err.msg}')
+		return error('could not access $c.bashrc: ${err.msg()}')
 	}
 	bashrc_file.writeln(str) or {
-		return error('could not write $str to $c.bashrc: ${err.msg}')
+		return error('could not write $str to $c.bashrc: ${err.msg()}')
 	}
 	bashrc_file.close()
 }
