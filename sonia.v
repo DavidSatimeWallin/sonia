@@ -145,7 +145,7 @@ fn fail(input string) {
 	exit(1) // good idea..?!?!
 }
 
-fn (c Cfg) install_coc_plugins() ? {
+fn (c Cfg) install_coc_plugins() ! {
 	tell('installing coc plugins')
 	vim_exec := [
 		c.target_bin,
@@ -162,7 +162,7 @@ fn (c Cfg) install_coc_plugins() ? {
 	tell('coc plugins installed!')
 }
 
-fn (c Cfg) install_vim_plugins() ? {
+fn (c Cfg) install_vim_plugins() ! {
 	tell('installing vim plugins')
 
 	if c.delete_plugins == 'yes' {
@@ -185,7 +185,7 @@ fn (c Cfg) install_vim_plugins() ? {
 	tell('vim plugins installed!')
 }
 
-fn install_vimplug() ? {
+fn install_vimplug() ! {
 	tell('installing vim-plug')
 	result := os.execute(
 	'sh -c \'curl -fLo ${os.home_dir()}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\''
@@ -196,7 +196,7 @@ fn install_vimplug() ? {
 	tell('vim-plug installed!')
 }
 
-fn (c Cfg) symlink_config() ? {
+fn (c Cfg) symlink_config() ! {
 	tell('creating symlink')
 	repo := [c.target_repo, 'slimvim'].join('/')
 	link := [c.nvim_cfg_folder, 'init.vim'].join('/')
@@ -208,13 +208,10 @@ fn (c Cfg) symlink_config() ? {
 			}
 			tell('old symlink ($link) removed')
 		}
-	ok := os.symlink(
+	os.symlink(
 		'$repo/.vimrc',
 		link
 	) or {
-		return err
-	}
-	if !ok {
 		return error(
 			'could not symlink $repo/.vimrc into $link'
 		)
@@ -222,7 +219,7 @@ fn (c Cfg) symlink_config() ? {
 	tell('symlink created')
 }
 
-fn (c Cfg) clone_config() ? {
+fn (c Cfg) clone_config() ! {
 	tell('cloning config files')
 
 	repo := [c.target_repo, 'slimvim'].join('/')
@@ -238,7 +235,7 @@ fn (c Cfg) clone_config() ? {
 	tell('config files cloned!')
 }
 
-fn install_rustup() ? {
+fn install_rustup() ! {
 	tell('installing rustup')
 	result := os.execute('curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y')
 	if result.exit_code != 0 {
@@ -247,7 +244,7 @@ fn install_rustup() ? {
 	tell('rustup installed!')
 }
 
-fn install_rust_utilities() ? {
+fn install_rust_utilities() ! {
 	tell('installing rust utilities')
 	// temp fix?
 	mut skip_fix := false
@@ -301,7 +298,7 @@ fn install_rust_utilities() ? {
 	tell('rust utilities installed!')
 }
 
-fn (c Cfg) create_directories_if_not_exists() ? {
+fn (c Cfg) create_directories_if_not_exists() ! {
 	if !os.exists(c.target_folder) {
 		os.mkdir(c.target_folder) or {
 			return error('$c.target_folder: $err')
@@ -332,7 +329,7 @@ fn tell(input string) {
 	println(term.ok_message(input))
 }
 
-fn (c Cfg) download_nvim_appimage() ? {
+fn (c Cfg) download_nvim_appimage() ! {
 	mut skip_download := false
 
 	output_file := [
@@ -357,7 +354,7 @@ fn (c Cfg) download_nvim_appimage() ? {
 	if !skip_download {
 		tell('downloading $output_file')
 		http.download_file(
-			'https://github.com/neovim/neovim/releases/download/v0.7.0/nvim.appimage',
+			'https://github.com/neovim/neovim/releases/download/v0.9.1/nvim.appimage',
 			output_file
 		) or {
 			return error('could not download nvim: ${err.msg()}')
@@ -370,7 +367,7 @@ fn (c Cfg) download_nvim_appimage() ? {
 	}
 }
 
-fn (c Cfg) path_exists() ?bool {
+fn (c Cfg) path_exists() !bool {
 	content := os.read_file(c.bashrc) or {
 		return error('could not read from $c.bashrc: ${err.msg()}')
 	}
@@ -380,7 +377,7 @@ fn (c Cfg) path_exists() ?bool {
 	return false
 }
 
-fn (c Cfg) handle_rc_files() ? {
+fn (c Cfg) handle_rc_files() ! {
 	soniarc := [c.target_folder, 'soniarc'].join('/')
 	soniarc_content := '#sonia-cfg\nexport PATH="$c.target_bin:\$PATH"\nalias vim="nvim.appimage"'
 
