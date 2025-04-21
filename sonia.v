@@ -7,9 +7,7 @@ import term
 
 import readline
 
-const (
-	sonia_version = '0.1.2.2'
-)
+const sonia_version = '0.1.3.2'
 
 /*
 
@@ -56,7 +54,7 @@ struct Cfg {
 		cmdline.option(
 			os.args,
 			'--git-repo',
-			'https://github.com/dvwallin/slimvim'
+			'https://github.com/davidsatimewallin/slimvim'
 		)
 	mut:
 	target_bin string = 'bin'
@@ -66,7 +64,7 @@ struct Cfg {
 fn main() {
 
 	if '--help' in os.args || '-help' in os.args {
-		println(term.header('Sonia v$sonia_version - by David Satime Wallin <david@dwall.in>', '.'))
+		println(term.header('Sonia v$sonia_version - by David Satime Wallin <david@snogerup.com>', '.'))
 		print('\nUSAGE:\n\n\t${term.bold('sonia [flags]')}\n\n')
 		println('FLAGS:')
 		print('\n\t${term.bold('--bashrc')}\t\tthe location of the .bashrc -file. default is \$HOME/.bashrc')
@@ -354,7 +352,7 @@ fn (c Cfg) download_nvim_appimage() ! {
 	if !skip_download {
 		tell('downloading $output_file')
 		http.download_file(
-			'https://github.com/neovim/neovim/releases/download/v0.9.1/nvim.appimage',
+			'https://github.com/neovim/neovim/releases/download/v0.11.0/nvim-linux-x86_64.appimage',
 			output_file
 		) or {
 			return error('could not download nvim: ${err.msg()}')
